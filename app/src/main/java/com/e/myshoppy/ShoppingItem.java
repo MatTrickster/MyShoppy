@@ -37,8 +37,8 @@ public class ShoppingItem implements Serializable {
         return description;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getQuantity() {
+        return String.valueOf(quantity);
     }
 
     public String getPrice() {

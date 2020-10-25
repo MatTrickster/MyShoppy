@@ -20,17 +20,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class ProductsActivity extends AppCompatActivity {
 
     ListView listView;
-    ArrayAdapter<String> proAdapter;
+    ProductListAdapter proAdapter;
     ProgressBar progressBar;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     TextView empty;
     FloatingActionButton fab;
-    private ArrayList<String> products;
+    private ArrayList<ShoppingItem> products;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class ProductsActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress);
         progressBar.setVisibility(View.VISIBLE);
         listView = findViewById(R.id.listview);
-        empty = findViewById(R.id.empty);
+        empty = findViewById(R.id.empty_view);
         listView.setEmptyView(empty);
         fab = findViewById(R.id.add);
 
@@ -57,7 +59,7 @@ public class ProductsActivity extends AppCompatActivity {
                 listView.setVisibility(View.VISIBLE);
 
                 products = setUpList(snapshot);
-                proAdapter = new ArrayAdapter<String>(getApplication(),android.R.layout.simple_list_item_1,products);
+                proAdapter = new ProductListAdapter(getApplicationContext(),products);
                 listView.setAdapter(proAdapter);
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,13 +90,31 @@ public class ProductsActivity extends AppCompatActivity {
         });
     }
 
-    public static ArrayList<String> setUpList(DataSnapshot dataSnapshot) {
+    public static ArrayList<ShoppingItem> setUpList(DataSnapshot dataSnapshot) {
 
-        ArrayList<String> items = new ArrayList<String>();
+        ArrayList<ShoppingItem> items  = new ArrayList<ShoppingItem>();
 
-        for (DataSnapshot snap : dataSnapshot.getChildren()) {
+        for (DataSnapshot snap : dataSnapshot.getChildren()){
 
-            items.add(snap.getKey());
+            int itemPrice = -1, quantity = 0;
+
+            try{
+                itemPrice = Integer.valueOf(NumberFormat.getCurrencyInstance()
+                        .parse(String.valueOf(snap.child("price").getValue()))
+                        .toString());
+            } catch (ParseException e){
+                e.printStackTrace();
+            }
+
+            quantity = Integer.valueOf(snap.child("quantity").getValue().toString());
+            items.add(new ShoppingItem(
+                    snap.child("productID").getValue().toString(),
+                    snap.child("title").getValue().toString(),
+                    snap.child("type").getValue().toString(),
+                    snap.child("description").getValue().toString(),
+                    itemPrice,
+                    quantity
+            ));
         }
 
         return items;

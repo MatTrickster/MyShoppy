@@ -6,44 +6,90 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:src="@drawable/add"
         android:id="@+id/itemIcon"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="60dp"
         android:layout_height="60dp" />
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/itemName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textSize="16sp"
-            tools:text="Name" />
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/itemDescription"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/itemName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="16sp"
+                tools:text="Name" />
+
+            <TextView
+                android:id="@+id/itemDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray"
+                tools:text="Item Description" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
-            android:maxLines="1"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"
-            tools:text="Item Description" />
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/minus"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                tools:text="-" />
+
+            <TextView
+                android:id="@+id/quantity"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                tools:text="4" />
+
+            <TextView
+                android:id="@+id/plus"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                tools:text="+" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <TextView
+        android:layout_margin="16dp"
         android:id="@+id/itemPrice"
         android:textColor="@android:color/black"
         android:layout_width="wrap_content"

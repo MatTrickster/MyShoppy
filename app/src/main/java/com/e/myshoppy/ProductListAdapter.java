@@ -48,6 +48,15 @@ public class ProductListAdapter extends ArrayAdapter<ShoppingItem> {
         TextView cost = listItemView.findViewById(R.id.itemPrice);
         cost.setText(currentItem.getPrice());
 
+        TextView quantity = listItemView.findViewById(R.id.quantity);
+        quantity.setText(currentItem.getQuantity());
+
+        TextView minus = listItemView.findViewById(R.id.minus);
+        TextView plus = listItemView.findViewById(R.id.plus);
+
+        minus.setText("-");
+        plus.setText("+");
+
         return listItemView;
     }
 
