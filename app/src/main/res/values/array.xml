@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinnerItems1">
+        <item>Customer</item>
+        <item>Admin</item>
+        <item>Shopkeeper</item>
+    </string-array>
+
+    <string-array name="spinnerItems2">
+        <item>Customer</item>
+        <item>Shopkeeper</item>
+    </string-array>
+
+</resources>

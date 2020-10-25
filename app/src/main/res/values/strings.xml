@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">MyShoppy</string>
+    <string name="register">New User? \n<u>Click to Register</u></string>
+    <string name="forget_password_email_entry">Enter your registered email id here</string>
+    <string name="submit">Submit</string>
+    <string name="reset_password_toast">Check mail to create new password</string>
+    <string name="sellerRegister">Register as seller</string>
+    <string name="ifSellerListEmpty">It\'s empty in here. \nAdd something!</string>
+
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">All fields required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="auth_failed">Failed. Please retry</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_main_app_page">MainAppPage</string>
+    <string name="action_settings">Settings</string>
+    <string name="logout">Sign Out</string>
+    <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="title_activity_individual_product">IndividualProduct</string>
+
+</resources>
