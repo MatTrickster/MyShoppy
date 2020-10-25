@@ -112,19 +112,8 @@ public class RegisterActivity extends AppCompatActivity {
                         myRef = FirebaseDatabase.getInstance().getReference("shopkeepers").child(user.getUid());
                         myRef.child(user.getUid()).push();
 
-                        ArrayList<ShoppingItem> prods = new ArrayList<>();
-                        prods.add(new ShoppingItem("", "", "", "", -1, -1));
-                        Map<String, Object> prodslist = new HashMap<>();
-                        prodslist.put("products", prods);
-
-                        Map<String, Object> state = new HashMap<>();
-                        state.put("isEmpty", Boolean.TRUE);
-
                         ShopDetails details = new ShopDetails(sName,name,sRegNumber,sAddress);
-
                         myRef.child("shopDetails").setValue(details);
-                        myRef.updateChildren(prodslist);
-                        myRef.updateChildren(state);
                     }
 
 

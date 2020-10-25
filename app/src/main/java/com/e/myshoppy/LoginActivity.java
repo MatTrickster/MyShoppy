@@ -67,16 +67,29 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                    if (dataSnapshot.exists()) {
-                                        if(pos == 0) {
+                                    if(dataSnapshot.exists()) {
+                                        if (pos == 0) {
+                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                            startActivity(intent);
+                                            Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            finish();
+                                        } else if (pos == 2) {
+                                            Intent intent = new Intent(getApplicationContext(), ShopkeeperActivity.class);
+                                            startActivity(intent);
+                                            Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.GONE);
+                                            finish();
+                                        }
+                                    }else{
+                                        if (pos == 2) {
                                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                             intent.putExtra("is_seller", false);
                                             startActivity(intent);
                                             Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
                                             progressBar.setVisibility(View.GONE);
                                             finish();
-                                        }
-                                        else if(pos == 2) {
+                                        } else if (pos == 0) {
                                             Intent intent = new Intent(getApplicationContext(), ShopkeeperActivity.class);
                                             intent.putExtra("is_seller", true);
                                             startActivity(intent);
@@ -85,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                                             finish();
                                         }
                                     }
+
 
                                 }
 
