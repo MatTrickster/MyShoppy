@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -59,7 +60,7 @@ public class ProductsActivity extends AppCompatActivity {
                 listView.setVisibility(View.VISIBLE);
 
                 products = setUpList(snapshot);
-                proAdapter = new ProductListAdapter(getApplicationContext(),products);
+                proAdapter = new ProductListAdapter(getApplicationContext(),products,"seller");
                 listView.setAdapter(proAdapter);
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,15 +97,8 @@ public class ProductsActivity extends AppCompatActivity {
 
         for (DataSnapshot snap : dataSnapshot.getChildren()){
 
-            int itemPrice = -1, quantity = 0;
-
-            try{
-                itemPrice = Integer.valueOf(NumberFormat.getCurrencyInstance()
-                        .parse(String.valueOf(snap.child("price").getValue()))
-                        .toString());
-            } catch (ParseException e){
-                e.printStackTrace();
-            }
+            String itemPrice = snap.child("price").getValue().toString();
+            int quantity = 0;
 
             quantity = Integer.valueOf(snap.child("quantity").getValue().toString());
             items.add(new ShoppingItem(
@@ -112,8 +106,9 @@ public class ProductsActivity extends AppCompatActivity {
                     snap.child("title").getValue().toString(),
                     snap.child("type").getValue().toString(),
                     snap.child("description").getValue().toString(),
-                    itemPrice,
-                    quantity
+                    "Rs. "+itemPrice,
+                    quantity,
+                    FirebaseAuth.getInstance().getCurrentUser().getUid()
             ));
         }
 

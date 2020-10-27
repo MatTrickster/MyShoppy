@@ -99,13 +99,17 @@ public class RegisterActivity extends AppCompatActivity {
                         myRef.child(user.getUid()).push();
 
                         ArrayList<ShoppingItem> cart = new ArrayList<>();
-                        cart.add(new ShoppingItem("", "", "", "", -1, -1));
+                        cart.add(new ShoppingItem("", "", "", "", "", -1,""));
                         Map<String, Object> cartItems = new HashMap<>();
                         cartItems.put("cartItems", cart);
 
                         Map<String, Object> cartState = new HashMap<>();
                         cartState.put("isCartEmpty", Boolean.TRUE);
 
+                        Map<String, Object> shopId = new HashMap<>();
+                        shopId.put("shopId","null");
+
+                        myRef.updateChildren(shopId);
                         myRef.updateChildren(cartItems);
                         myRef.updateChildren(cartState);
                     } else {

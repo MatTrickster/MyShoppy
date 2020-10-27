@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ImageView
-        android:src="@drawable/add"
         android:id="@+id/itemIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_width="60dp"
-        android:layout_height="60dp" />
+        android:src="@drawable/add" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/itemName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:textColor="@android:color/black"
                 android:textSize="16sp"
                 tools:text="Name" />
 
@@ -43,59 +44,73 @@
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="1"
-                android:textSize="12sp"
                 android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
                 tools:text="Item Description" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/change"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="2"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/minus"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
-                tools:text="-" />
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/minus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textSize="30sp"
+                    tools:text="-" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/quantity"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:layout_height="wrap_content"
                 android:textSize="16sp"
                 tools:text="4" />
 
-            <TextView
-                android:id="@+id/plus"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
-                tools:text="+" />
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textSize="30sp"
+                    tools:text="+" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
     <TextView
-        android:layout_margin="16dp"
+        android:layout_margin="16sp"
         android:id="@+id/itemPrice"
-        android:textColor="@android:color/black"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:textSize="16sp"
-        android:text="big bucks"/>
+        android:gravity="center"
+        android:text="big bucks"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 
 </LinearLayout>

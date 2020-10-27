@@ -32,7 +32,6 @@ public class AddProduct extends AppCompatActivity {
         setContentView(R.layout.activity_add_product);
 
         final String pType = getIntent().getStringExtra("type");
-        Log.i("TSG",pType+"d");
 
         myref = FirebaseDatabase.getInstance().getReference("shopkeepers/" +
                 FirebaseAuth.getInstance().getCurrentUser().getUid() + "/products/" + pType + "/");
@@ -67,10 +66,12 @@ public class AddProduct extends AppCompatActivity {
                             ShoppingItem item = new ShoppingItem(
                                     productid.getText().toString(),
                                     title.getText().toString(),
-                                    type.getText().toString(),
+                                    pType,
                                     description.getText().toString(),
-                                    Integer.valueOf(price.getText().toString()),
-                                    Integer.valueOf(quantity.getText().toString()));
+                                    price.getText().toString(),
+                                    Integer.valueOf(quantity.getText().toString()),
+                                    FirebaseAuth.getInstance().getCurrentUser().getUid()
+                                    );
 
                             DatabaseReference tempref = FirebaseDatabase.getInstance().getReference("categories/");
                             Map<String,Object> map = new HashMap<>();

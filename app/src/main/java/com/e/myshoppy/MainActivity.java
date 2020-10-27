@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,9 +35,10 @@ public class MainActivity extends AppCompatActivity {
     TextView empty;
     DatabaseReference ref;
     ProgressBar progressBar;
+    FloatingActionButton fab;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -44,8 +47,30 @@ public class MainActivity extends AppCompatActivity {
         empty = findViewById(R.id.empty);
         gridView.setEmptyView(empty);
         progressBar = findViewById(R.id.progress);
+
+        fab = findViewById(R.id.cart);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(MainActivity.this,CartActivity.class));
+
+            }
+        });
+
         adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,list);
         gridView.setAdapter(adapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Intent intent = new Intent(MainActivity.this,UserProductActivity.class);
+                intent.putExtra("category",list.get(i));
+                startActivity(intent);
+
+            }
+        });
 
         ref = FirebaseDatabase.getInstance().getReference("categories/");
 

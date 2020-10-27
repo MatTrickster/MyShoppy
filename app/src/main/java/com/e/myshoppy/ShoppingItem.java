@@ -5,16 +5,30 @@ import java.text.NumberFormat;
 
 public class ShoppingItem implements Serializable {
 
-    private String name, type, description, productID;
-    private int price, quantity;
+    private String name, type, description, productID,shopId,price;
+    private int quantity;
 
-    public ShoppingItem(String productId, String name, String type, String description, int price, int quantity){
+    public ShoppingItem(String productId, String name, String type, String description, String price, int quantity,
+                        String shopId){
         this.productID = productId;
         this.name = name;
         this.type = type;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+        this.shopId = shopId;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
     }
 
     public void setQuantity(int quantity){
@@ -37,12 +51,12 @@ public class ShoppingItem implements Serializable {
         return description;
     }
 
-    public String getQuantity() {
-        return String.valueOf(quantity);
+    public int getQuantity() {
+        return quantity;
     }
 
     public String getPrice() {
-        return NumberFormat.getCurrencyInstance().format(price);
+        return price;
     }
 
 }

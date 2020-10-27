@@ -1,6 +1,7 @@
 package com.e.myshoppy;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -41,6 +42,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setMessage("Loading ...");
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
         register = findViewById(R.id.register);
         login = findViewById(R.id.login);
         email_edit = findViewById(R.id.usernameLogin);
@@ -54,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-
+                    dialog.setMessage("Signing In ...");
                     String tag = "";
 
                     if(pos == 0)
@@ -66,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-
+                                    dialog.dismiss();
                                     if(dataSnapshot.exists()) {
                                         if (pos == 0) {
                                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -109,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });
                 } else {
-
+                    dialog.dismiss();
                     Log.d("TAG", "onAuthStateChanged:signed_out");
                 }
 

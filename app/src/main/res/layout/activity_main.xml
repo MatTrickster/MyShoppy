@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     tools:context=".MainActivity">
 
     <ProgressBar
@@ -12,13 +13,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <GridView
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:id="@+id/grid"
-        android:numColumns="3"
+    <LinearLayout
+        android:padding="5dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+
+        <GridView
+            android:columnWidth="150dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:stretchMode="spacingWidthUniform"
+            android:verticalSpacing="10dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/grid"
+            android:numColumns="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/empty"
@@ -27,6 +40,16 @@
         android:text="No Items"
         android:gravity="center"
         android:textSize="20sp"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/cart"
+        android:id="@+id/cart"
         />
 
 </RelativeLayout>
