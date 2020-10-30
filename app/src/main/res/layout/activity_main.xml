@@ -7,49 +7,21 @@
     android:layout_gravity="center"
     tools:context=".MainActivity">
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <LinearLayout
-        android:padding="5dp"
-        android:orientation="horizontal"
+    <FrameLayout
+        android:layout_above="@id/nav"
+        android:id="@+id/frame_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content" />
 
-        <GridView
-            android:columnWidth="150dp"
-            android:gravity="center"
-            android:horizontalSpacing="10dp"
-            android:stretchMode="spacingWidthUniform"
-            android:verticalSpacing="10dp"
-            android:layout_marginTop="20dp"
-            android:id="@+id/grid"
-            android:numColumns="2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="No Items"
-        android:gravity="center"
-        android:textSize="20sp"
-        />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/cart"
-        android:id="@+id/cart"
+        app:menu="@menu/bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:id="@+id/nav"
+        android:layout_height="wrap_content"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="#fff"
+        app:itemTextColor="#fff"
         />
 
 </RelativeLayout>

@@ -6,41 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".ShopkeeperActivity">
 
-    <TextView
-        android:id="@+id/empty"
+    <FrameLayout
+        android:layout_above="@id/nav"
+        android:id="@+id/frame_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="No Products"
-        android:gravity="center"
-        android:textSize="20sp"
-        />
+        android:layout_height="wrap_content" />
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-
-
-    <ListView
-        android:id="@+id/listview"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="8dp"
-        android:paddingBottom="120dp"
-        android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:scrollbarStyle="outsideOverlay" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/add"
-        android:id="@+id/add"
+        app:menu="@menu/bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:id="@+id/nav"
+        android:layout_height="wrap_content"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="#fff"
+        app:itemTextColor="#fff"
         />
 
 </RelativeLayout>

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -30,6 +32,7 @@ import java.util.Map;
 
 public class IndividualProduct extends AppCompatActivity {
 
+    ImageView imageView;
     ShoppingItem item;
     String sId,pId,type;
     DatabaseReference reference;
@@ -73,6 +76,7 @@ public class IndividualProduct extends AppCompatActivity {
         type = item.getType();
         stock = item.getQuantity();
 
+        imageView = findViewById(R.id.image);
         progressBar = findViewById(R.id.progress);
         add = findViewById(R.id.plus);
         sub = findViewById(R.id.minus);
@@ -81,6 +85,8 @@ public class IndividualProduct extends AppCompatActivity {
         description = findViewById(R.id.p_description);
         quantity = findViewById(R.id.p_quantity);
         addToCart = findViewById(R.id.add_to_cart);
+
+        Picasso.with(IndividualProduct.this).load(item.getPath()).placeholder(R.drawable.add).into(imageView);
 
         name.setText(item.getTitle());
         price.setText(item.getPrice());
@@ -183,7 +189,7 @@ public class IndividualProduct extends AppCompatActivity {
                         snap.child("description").getValue().toString(),
                         itemPrice,
                         Integer.valueOf(snap.child("quantity").getValue().toString()),
-                        sId
+                        sId,null
                 ));
 
                 tempIndex++;

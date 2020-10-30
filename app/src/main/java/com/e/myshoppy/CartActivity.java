@@ -3,12 +3,16 @@ package com.e.myshoppy;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +33,7 @@ import java.util.Map;
 public class CartActivity extends AppCompatActivity {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref, ref1;
+    DatabaseReference ref, ref1, ref2;
     Boolean isCartEmpty = true;
     TextView priceView, empty;
     private FirebaseUser user;
@@ -39,6 +43,8 @@ public class CartActivity extends AppCompatActivity {
     ArrayList<ShoppingItem> items;
     DataSnapshot data;
     Boolean possible = true;
+    Boolean alreadyOrderExist = false, shopOrdersExist = false;
+    long noOfOrders = 0, noOfShopOrders = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +65,12 @@ public class CartActivity extends AppCompatActivity {
 
                     isCartEmpty = (Boolean) dataSnapshot.child("isCartEmpty").getValue();
                     sId = dataSnapshot.child("shopId").getValue().toString();
-                    Log.i("TAG","xdd"+sId);
+
+                    if(dataSnapshot.child("orders").getChildrenCount()!=0){
+                        alreadyOrderExist = true;
+                        noOfOrders = dataSnapshot.child("orders").getChildrenCount();
+                    }
+
                     if (isCartEmpty) {
                         priceView.setText("0");
                     } else {
@@ -92,6 +103,22 @@ public class CartActivity extends AppCompatActivity {
 
                             }
                         });
+
+                        ref2 = database.getReference().child("shopkeepers").child(sId);
+                        ref2.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.child("orders").getChildrenCount() != 0){
+                                    shopOrdersExist = true;
+                                    noOfShopOrders = snapshot.child("orders").getChildrenCount();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 }
             }
@@ -114,7 +141,11 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Order();
+                if(items.size()>0)
+                    Order();
+                else{
+                    Toast.makeText(getApplicationContext(),"Cart is Empty",Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -123,6 +154,10 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 clearCart();
+                Map<String, Object> shopId = new HashMap<>();
+                shopId.put("shopId", "null");
+
+                ref.updateChildren(shopId);
                 finish();
             }
         });
@@ -155,15 +190,22 @@ public class CartActivity extends AppCompatActivity {
                     snap.child("description").getValue().toString(),
                     String.valueOf(itemPrice),
                     quantity,
-                    snap.child("shopId").getValue().toString()
+                    snap.child("shopId").getValue().toString(),
+                    null
             ));
 
             totalAmount += quantity * itemPrice;
         }
 
-        ListView view = findViewById(R.id.shoppingCartList);
-        view.setAdapter(new CartAdapter(getApplicationContext(), items));
-        view.setEmptyView(empty);
+        RecyclerView view = findViewById(R.id.shoppingCartList);
+        view.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        view.setLayoutManager(layoutManager);
+        view.setAdapter(new CartAdapter(getApplicationContext(),items,"cart"));
+        if(items.size()>0)
+            empty.setVisibility(View.INVISIBLE);
+        else
+            empty.setVisibility(View.VISIBLE);
 
         priceView.setText("Rs. " + totalAmount);
     }
@@ -216,10 +258,40 @@ public class CartActivity extends AppCompatActivity {
                 }
             }
 
-            Map<String,Object> order = new HashMap<>();
-            order.put("orders",items);
-            ref.updateChildren(order);
+            if(alreadyOrderExist){
+                ref.child("orders").child(""+(noOfOrders+1)).setValue(items);
+            }else{
+
+                Map<String,Object> order = new HashMap<>();
+                order.put("1",items);
+                ref.child("orders").updateChildren(order);
+
+            }
+
+            Map<String,Object> amount = new HashMap<>();
+            amount.put("amount",totalAmount);
+            ref.child("orders").child(""+(noOfOrders+1)).updateChildren(amount);
+
+            if(shopOrdersExist){
+                ref2.child("orders").child(""+(noOfShopOrders+1)).setValue(items);
+
+            }else{
+                Map<String,Object> order = new HashMap<>();
+                order.put("1",items);
+                ref2.child("orders").updateChildren(order);
+            }
+
+            Map<String,Object> userId = new HashMap<>();
+            userId.put("userId",user.getUid());
+            ref2.child("orders").child(""+(noOfShopOrders+1)).updateChildren(userId);
+            ref2.child("orders").child(""+(noOfShopOrders+1)).updateChildren(amount);
+
             Toast.makeText(getApplicationContext(),"Order Placed",Toast.LENGTH_SHORT).show();
+
+            Map<String, Object> shopId = new HashMap<>();
+            shopId.put("shopId", "null");
+
+            ref.updateChildren(shopId);
 
             clearCart();
 

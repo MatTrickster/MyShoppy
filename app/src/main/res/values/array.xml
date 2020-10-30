@@ -11,4 +11,54 @@
         <item>Shopkeeper</item>
     </string-array>
 
+    <string-array name="categories">
+        <item>Clothing</item>
+        <item>Jewellery</item>
+        <item>Electronics</item>
+        <item>Medicine</item>
+        <item>Grocery</item>
+        <item>Restaurant</item>
+        <item>Departmental Stores</item>
+        <item>Furniture</item>
+        <item>Cosmetics</item>
+        <item>Books</item>
+        <item>Musical Instruments</item>
+        <item>Electronics Repairing</item>
+        <item>Textile</item>
+
+    </string-array>
+
+    <string-array name="states">
+
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chattisgarh</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jharkhand</item>
+        <item>karnataka</item>
+        <item>kerala</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Odisha</item>
+        <item>Punjab</item>
+        <item>Rajashtan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+
+    </string-array>
+
 </resources>

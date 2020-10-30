@@ -20,6 +20,12 @@
         android:orientation="vertical"
         android:paddingTop="24dp">
 
+        <ImageView
+            android:id="@+id/image"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
         <TextView
             android:id="@+id/p_name"
             android:layout_width="match_parent"

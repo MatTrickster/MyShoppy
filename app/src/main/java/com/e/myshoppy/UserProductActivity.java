@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -16,6 +18,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,7 +59,7 @@ public class UserProductActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 list = getItems(snapshot);
-                adapter = new ProductListAdapter(getApplicationContext(),list,"customer");
+                adapter = new ProductListAdapter(getApplicationContext(),list,null,"","customer");
                 listView.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);
 
@@ -112,6 +115,27 @@ public class UserProductActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.logoutItem) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+        }else if(id == R.id.cart){
+            startActivity(new Intent(getApplicationContext(),CartActivity.class));
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     public ArrayList<ShoppingItem> getItems(DataSnapshot snapshot){
 
         ArrayList<ShoppingItem> items  = new ArrayList<ShoppingItem>();
@@ -135,7 +159,8 @@ public class UserProductActivity extends AppCompatActivity {
                                 snap.child("description").getValue().toString(),
                                 "Rs. "+itemPrice,
                                 quantity,
-                                snapshot1.getKey()
+                                snapshot1.getKey(),
+                                snap.child("path").getValue().toString()
                         ));
 
                     }

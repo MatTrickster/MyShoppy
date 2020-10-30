@@ -1,5 +1,7 @@
 package com.e.myshoppy;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.text.NumberFormat;
 
@@ -7,9 +9,10 @@ public class ShoppingItem implements Serializable {
 
     private String name, type, description, productID,shopId,price;
     private int quantity;
+    private String path;
 
     public ShoppingItem(String productId, String name, String type, String description, String price, int quantity,
-                        String shopId){
+                        String shopId, String path){
         this.productID = productId;
         this.name = name;
         this.type = type;
@@ -17,6 +20,15 @@ public class ShoppingItem implements Serializable {
         this.price = price;
         this.quantity = quantity;
         this.shopId = shopId;
+        this.path = path;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public void setPrice(String price) {

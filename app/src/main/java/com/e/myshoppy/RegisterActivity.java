@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +100,8 @@ public class RegisterActivity extends AppCompatActivity {
                         myRef.child(user.getUid()).push();
 
                         ArrayList<ShoppingItem> cart = new ArrayList<>();
-                        cart.add(new ShoppingItem("", "", "", "", "", -1,""));
+                        cart.add(new ShoppingItem("", "", "", "",
+                                "", -1,"",null));
                         Map<String, Object> cartItems = new HashMap<>();
                         cartItems.put("cartItems", cart);
 
@@ -109,6 +111,13 @@ public class RegisterActivity extends AppCompatActivity {
                         Map<String, Object> shopId = new HashMap<>();
                         shopId.put("shopId","null");
 
+                        Map<String,Object> info = new HashMap<>();
+                        info.put("name",name_edit.getText().toString());
+                        info.put("email",email_edit.getText().toString());
+                        Map<String,Object> infod = new HashMap<>();
+                        infod.put("info",info);
+
+                        myRef.updateChildren(infod);
                         myRef.updateChildren(shopId);
                         myRef.updateChildren(cartItems);
                         myRef.updateChildren(cartState);

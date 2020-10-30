@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,6 +36,7 @@ public class ProductsActivity extends AppCompatActivity {
     TextView empty;
     FloatingActionButton fab;
     private ArrayList<ShoppingItem> products;
+    ArrayList<String> refs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,19 +61,11 @@ public class ProductsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 listView.setVisibility(View.VISIBLE);
-
+                refs = new ArrayList<>();
                 products = setUpList(snapshot);
-                proAdapter = new ProductListAdapter(getApplicationContext(),products,"seller");
+                proAdapter = new ProductListAdapter(getApplicationContext(),products,refs,category,"seller");
                 listView.setAdapter(proAdapter);
 
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                    }
-                });
-
-                listView.setTextFilterEnabled(true);
                 progressBar.setVisibility(View.GONE);
 
             }
@@ -91,7 +86,27 @@ public class ProductsActivity extends AppCompatActivity {
         });
     }
 
-    public static ArrayList<ShoppingItem> setUpList(DataSnapshot dataSnapshot) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.shopkeeper_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.logoutItem) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public ArrayList<ShoppingItem> setUpList(DataSnapshot dataSnapshot) {
+
 
         ArrayList<ShoppingItem> items  = new ArrayList<ShoppingItem>();
 
@@ -99,6 +114,7 @@ public class ProductsActivity extends AppCompatActivity {
 
             String itemPrice = snap.child("price").getValue().toString();
             int quantity = 0;
+            refs.add(snap.getKey());
 
             quantity = Integer.valueOf(snap.child("quantity").getValue().toString());
             items.add(new ShoppingItem(
@@ -108,7 +124,8 @@ public class ProductsActivity extends AppCompatActivity {
                     snap.child("description").getValue().toString(),
                     "Rs. "+itemPrice,
                     quantity,
-                    FirebaseAuth.getInstance().getCurrentUser().getUid()
+                    FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                    snap.child("path").getValue().toString()
             ));
         }
 
