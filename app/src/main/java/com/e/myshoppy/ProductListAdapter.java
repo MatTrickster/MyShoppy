@@ -43,8 +43,7 @@ public class ProductListAdapter extends ArrayAdapter<ShoppingItem> {
 
         View listItemView = convertView;
         if (listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.list_item, parent, false
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false
             );
         }
 
@@ -52,8 +51,6 @@ public class ProductListAdapter extends ArrayAdapter<ShoppingItem> {
 
         ImageView img = listItemView.findViewById(R.id.itemIcon);
         Picasso.with(context).load(currentItem.getPath()).placeholder(R.drawable.add).into(img);
-
-        Log.i("TAG","s"+currentItem.getPath());
 
         TextView name = listItemView.findViewById(R.id.itemName);
         name.setText(currentItem.getTitle());

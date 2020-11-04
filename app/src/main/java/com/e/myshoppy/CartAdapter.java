@@ -60,6 +60,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         ImageButton img;
         public TextView name,quan,price,total;
 
+
         ViewHolder(View view) {
             super(view);
             img = view.findViewById(R.id.removeFromCart);

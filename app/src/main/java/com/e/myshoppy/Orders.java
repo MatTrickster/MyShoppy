@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,8 @@ public class Orders extends Fragment {
     OrderParentAdapter parentItemAdapter;
     Context context;
     String type;
+    TextView current,past;
+    ArrayList<DataSnapshot> snaps = new ArrayList<>();
 
     public Orders(Context c, String type) {
         context = c;
@@ -49,9 +52,11 @@ public class Orders extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_orders, container, false);
         RecyclerView currentList = view.findViewById(R.id.list1);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        current = view.findViewById(R.id.current);
+        past = view.findViewById(R.id.past);
 
-        parentItemAdapter = new OrderParentAdapter(ParentItemList(), getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        parentItemAdapter = new OrderParentAdapter(ParentItemList(), getContext(),type,snaps);
         currentList.setAdapter(parentItemAdapter);
         currentList.setLayoutManager(layoutManager);
 
@@ -81,11 +86,12 @@ public class Orders extends Fragment {
                     List<ShoppingItem> item = ChildItemList(snap,type.equals("customer")?0:1);
                     items.add(new OrderParentItem("Order " + snap.getKey(),
                             item, "Rs ." + snap.child("amount").getValue().toString()));
-
+                    snaps.add(snap);
                     i++;
                 }
 
                 parentItemAdapter.notifyDataSetChanged();
+                current.setText("Ongoing Order (" + items.size() +")");
 
             }
 
@@ -95,14 +101,14 @@ public class Orders extends Fragment {
             }
         });
 
+
         return items;
     }
 
     public List<ShoppingItem> ChildItemList(DataSnapshot snap,int x) {
 
         List<ShoppingItem> item = new ArrayList<>();
-        Log.i("TAG","as"+snap.getChildrenCount());
-        long loop = (x==0)?snap.getChildrenCount()-1:snap.getChildrenCount()-2;
+        long loop = (x==0)?snap.getChildrenCount()-3:snap.getChildrenCount()-4;
         for (int i = 0; i < loop; i++) {
 
             item.add(new ShoppingItem(

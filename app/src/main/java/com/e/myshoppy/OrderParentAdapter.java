@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +21,14 @@ public class OrderParentAdapter extends RecyclerView.Adapter<OrderParentAdapter.
     Context context;
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
     private List<OrderParentItem> itemList;
+    String type;
+    ArrayList<DataSnapshot> snaps;
 
-    OrderParentAdapter(List<OrderParentItem> itemList, Context context) {
+    OrderParentAdapter(List<OrderParentItem> itemList, Context context, String type, ArrayList<DataSnapshot> snaps) {
         this.context = context;
         this.itemList = itemList;
+        this.type = type;
+        this.snaps = snaps;
     }
 
     @NonNull
@@ -34,7 +40,7 @@ public class OrderParentAdapter extends RecyclerView.Adapter<OrderParentAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderParentAdapter.ParentViewHolder parentViewHolder, int position) {
+    public void onBindViewHolder(@NonNull OrderParentAdapter.ParentViewHolder parentViewHolder, final int position) {
 
         OrderParentItem parentItem = itemList.get(position);
 
@@ -45,12 +51,27 @@ public class OrderParentAdapter extends RecyclerView.Adapter<OrderParentAdapter.
                         .getContext(), LinearLayoutManager.VERTICAL, false);
 
         layoutManager.setInitialPrefetchItemCount(parentItem.getChildItemList().size());
-        Log.i("TAG","lKK"+parentItem.getChildItemList().size());
 
         CartAdapter childItemAdapter = new CartAdapter(context,parentItem.getChildItemList(),"");
         parentViewHolder.ChildRecyclerView.setLayoutManager(layoutManager);
         parentViewHolder.ChildRecyclerView.setAdapter(childItemAdapter);
         parentViewHolder.ChildRecyclerView .setRecycledViewPool(viewPool);
+
+        parentViewHolder.status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(type.equals("customer")){
+
+                    
+
+
+                }else{
+
+                }
+
+            }
+        });
 
     }
 
@@ -61,7 +82,7 @@ public class OrderParentAdapter extends RecyclerView.Adapter<OrderParentAdapter.
 
     class ParentViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView number,price;
+        private TextView number,price,status;
         private RecyclerView ChildRecyclerView;
 
         ParentViewHolder(final View itemView)
@@ -71,6 +92,7 @@ public class OrderParentAdapter extends RecyclerView.Adapter<OrderParentAdapter.
             number = itemView.findViewById(R.id.number);
             ChildRecyclerView = itemView.findViewById(R.id.child);
             price = itemView.findViewById(R.id.price);
+            status = itemView.findViewById(R.id.status);
         }
     }
 }

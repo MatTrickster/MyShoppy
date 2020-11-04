@@ -6,16 +6,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -43,7 +48,7 @@ public class CartActivity extends AppCompatActivity {
     ArrayList<ShoppingItem> items;
     DataSnapshot data;
     Boolean possible = true;
-    Boolean alreadyOrderExist = false, shopOrdersExist = false;
+    Boolean alreadyOrderExist = false, shopOrdersExist = false, isAddressAvailable = false;
     long noOfOrders = 0, noOfShopOrders = 0;
 
     @Override
@@ -65,6 +70,9 @@ public class CartActivity extends AppCompatActivity {
 
                     isCartEmpty = (Boolean) dataSnapshot.child("isCartEmpty").getValue();
                     sId = dataSnapshot.child("shopId").getValue().toString();
+
+                    if(dataSnapshot.child("info").getChildrenCount() > 2)
+                        isAddressAvailable = true;
 
                     if(dataSnapshot.child("orders").getChildrenCount()!=0){
                         alreadyOrderExist = true;
@@ -156,7 +164,7 @@ public class CartActivity extends AppCompatActivity {
                 clearCart();
                 Map<String, Object> shopId = new HashMap<>();
                 shopId.put("shopId", "null");
-
+                Toast.makeText(getApplicationContext(), "Cart Cleared", Toast.LENGTH_SHORT).show();
                 ref.updateChildren(shopId);
                 finish();
             }
@@ -223,7 +231,7 @@ public class CartActivity extends AppCompatActivity {
 
             isCartEmpty = true;
 
-            Toast.makeText(getApplicationContext(), "Cart Cleared", Toast.LENGTH_SHORT).show();
+
         } else {
             Toast.makeText(getApplicationContext(), "Nothing To Clear", Toast.LENGTH_SHORT).show();
         }
@@ -236,7 +244,7 @@ public class CartActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        if(possible){
+        if(possible && isAddressAvailable){
 
             for(int i=0;i<items.size();i++){
 
@@ -286,16 +294,41 @@ public class CartActivity extends AppCompatActivity {
             ref2.child("orders").child(""+(noOfShopOrders+1)).updateChildren(userId);
             ref2.child("orders").child(""+(noOfShopOrders+1)).updateChildren(amount);
 
-            Toast.makeText(getApplicationContext(),"Order Placed",Toast.LENGTH_SHORT).show();
+            Map<String, Object> expectedDelivery = new HashMap<>();
+            expectedDelivery.put("expected delivery", "null");
+            Map<String, Object> delivered = new HashMap<>();
+            delivered.put("delivered", false);
+            ref.child("orders").child(""+(noOfOrders+1)).updateChildren(expectedDelivery);
+            ref.child("orders").child(""+(noOfOrders+1)).updateChildren(delivered);
+            ref2.child("orders").child(""+(noOfShopOrders+1)).updateChildren(expectedDelivery);
+            ref2.child("orders").child(""+(noOfShopOrders+1)).updateChildren(delivered);
 
             Map<String, Object> shopId = new HashMap<>();
             shopId.put("shopId", "null");
 
             ref.updateChildren(shopId);
 
+
+
             clearCart();
 
-            finish();
+            final AlertDialog.Builder builder1 = new AlertDialog.Builder(CartActivity.this);
+            View view = LayoutInflater.from(CartActivity.this).inflate(R.layout.order_placed,null);
+            ImageView img = view.findViewById(R.id.gif);
+            Glide.with(view).load(R.mipmap.tick).into(img);
+            builder1.setView(view);
+            builder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    finish();
+                }
+            });
+            final AlertDialog dialog1 = builder1.create();
+            dialog1.show();
+
+        }else if(!isAddressAvailable){
+            Toast.makeText(getApplicationContext(),"Address Not Available",Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(getApplicationContext(),"Out Of Stock",Toast.LENGTH_SHORT).show();
         }

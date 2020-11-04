@@ -38,7 +38,8 @@ public class UserProductActivity extends AppCompatActivity {
     ProgressBar progressBar;
     TextView empty;
     ProductListAdapter adapter;
-    String type;
+    String type, sId;
+    DataSnapshot data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class UserProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_product);
 
         type = getIntent().getStringExtra("category");
+        sId = getIntent().getStringExtra("sId");
         searchBar = findViewById(R.id.searchBar);
         listView = findViewById(R.id.listview);
         list = new ArrayList<>();
@@ -53,46 +55,16 @@ public class UserProductActivity extends AppCompatActivity {
         empty = findViewById(R.id.empty_view);
         listView.setEmptyView(empty);
 
-        ref = FirebaseDatabase.getInstance().getReference().child("shopkeepers/");
+        ref = FirebaseDatabase.getInstance().getReference("shopkeepers/" + sId + "/products/");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 list = getItems(snapshot);
-                adapter = new ProductListAdapter(getApplicationContext(),list,null,"","customer");
+                data = snapshot;
+                adapter = new ProductListAdapter(getApplicationContext(), list, null, "", "customer");
                 listView.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);
-
-                listView.setTextFilterEnabled(true);
-                searchBar.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                        /*
-                        int textlength = charSequence.length();
-                        ArrayList<ShoppingItem> tempShoppingItems = new ArrayList<>();
-                        for(ShoppingItem x: list){
-                            if (textlength <= x.getTitle().length()) {
-                                if (x.getTitle().toLowerCase().contains(charSequence.toString().toLowerCase())) {
-                                    tempShoppingItems.add(x);
-                                }
-                            }
-                        }
-                        listView.setAdapter(new ProductListAdapter(getApplicationContext(), tempShoppingItems));
-
-                         */
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
-                    }
-                });
 
             }
 
@@ -106,9 +78,38 @@ public class UserProductActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Intent intent = new Intent(UserProductActivity.this,IndividualProduct.class);
-                intent.putExtra("item",list.get(i));
+                Intent intent = new Intent(UserProductActivity.this, IndividualProduct.class);
+                intent.putExtra("item", list.get(i));
                 startActivity(intent);
+
+            }
+        });
+
+        listView.setTextFilterEnabled(true);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                int textLength = charSequence.length();
+                ArrayList<ShoppingItem> tempShoppingItems = new ArrayList<>();
+                for (ShoppingItem x : list) {
+                    if (textLength <= x.getTitle().length()) {
+                        if (x.getTitle().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            tempShoppingItems.add(x);
+                        }
+                    }
+                }
+                listView.setAdapter(new ProductListAdapter(getApplicationContext(), tempShoppingItems, null, "", "customer"));
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
 
             }
         });
@@ -129,41 +130,36 @@ public class UserProductActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             finish();
-        }else if(id == R.id.cart){
-            startActivity(new Intent(getApplicationContext(),CartActivity.class));
+        } else if (id == R.id.cart) {
+            startActivity(new Intent(getApplicationContext(), CartActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public ArrayList<ShoppingItem> getItems(DataSnapshot snapshot){
+    public ArrayList<ShoppingItem> getItems(DataSnapshot snapshot) {
 
-        ArrayList<ShoppingItem> items  = new ArrayList<ShoppingItem>();
+        ArrayList<ShoppingItem> items = new ArrayList<ShoppingItem>();
 
-        for(DataSnapshot snapshot1: snapshot.getChildren()){
+        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+            if (snapshot1.getKey().equals(type)) {
 
-            for (DataSnapshot snapshot2: snapshot1.child("products").getChildren()){
+                for (DataSnapshot snap : snapshot1.getChildren()) {
 
-                if(snapshot2.getKey().equals(type)){
+                    int quantity = 0;
+                    String itemPrice = snap.child("price").getValue().toString();
 
-                    for(DataSnapshot snap: snapshot2.getChildren()){
-
-                        int quantity = 0;
-                        String itemPrice = snap.child("price").getValue().toString();
-
-                        quantity = Integer.valueOf(snap.child("quantity").getValue().toString());
-                        items.add(new ShoppingItem(
-                                snap.child("productID").getValue().toString(),
-                                snap.child("title").getValue().toString(),
-                                snap.child("type").getValue().toString(),
-                                snap.child("description").getValue().toString(),
-                                "Rs. "+itemPrice,
-                                quantity,
-                                snapshot1.getKey(),
-                                snap.child("path").getValue().toString()
-                        ));
-
-                    }
+                    quantity = Integer.valueOf(snap.child("quantity").getValue().toString());
+                    items.add(new ShoppingItem(
+                            snap.child("productID").getValue().toString(),
+                            snap.child("title").getValue().toString(),
+                            snap.child("type").getValue().toString(),
+                            snap.child("description").getValue().toString(),
+                            "Rs. " + itemPrice,
+                            quantity,
+                            sId,
+                            snap.child("path").getValue().toString()
+                    ));
 
                 }
 
