@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".Orders">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -21,9 +21,10 @@
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Ongoing Order" />
+                android:text="Ongoing Orders (0)" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/list1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,9 +39,10 @@
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Past Order" />
+                android:text="Past Orders (0)" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,6 +53,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

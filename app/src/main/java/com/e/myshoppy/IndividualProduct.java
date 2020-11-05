@@ -189,7 +189,8 @@ public class IndividualProduct extends AppCompatActivity {
                         snap.child("description").getValue().toString(),
                         itemPrice,
                         Integer.valueOf(snap.child("quantity").getValue().toString()),
-                        sId,null
+                        sId,
+                        snap.child("path").getValue().toString()
                 ));
 
                 tempIndex++;

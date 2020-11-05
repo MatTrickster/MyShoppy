@@ -66,6 +66,7 @@ public class CartActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 if (dataSnapshot.getKey().equals(user.getUid())) {
 
                     isCartEmpty = (Boolean) dataSnapshot.child("isCartEmpty").getValue();
@@ -81,6 +82,14 @@ public class CartActivity extends AppCompatActivity {
 
                     if (isCartEmpty) {
                         priceView.setText("0");
+                        items = new ArrayList<>();
+                        RecyclerView view = findViewById(R.id.shoppingCartList);
+                        view.setHasFixedSize(true);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                        view.setLayoutManager(layoutManager);
+                        view.setAdapter(new CartAdapter(getApplicationContext(),items,"cart",dataSnapshot));
+                        empty.setVisibility(View.VISIBLE);
+
                     } else {
                         setUpShoppingCart(dataSnapshot.child("cartItems"));
 
@@ -199,7 +208,7 @@ public class CartActivity extends AppCompatActivity {
                     String.valueOf(itemPrice),
                     quantity,
                     snap.child("shopId").getValue().toString(),
-                    null
+                    snap.child("path").getValue().toString()
             ));
 
             totalAmount += quantity * itemPrice;
@@ -209,7 +218,7 @@ public class CartActivity extends AppCompatActivity {
         view.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         view.setLayoutManager(layoutManager);
-        view.setAdapter(new CartAdapter(getApplicationContext(),items,"cart"));
+        view.setAdapter(new CartAdapter(getApplicationContext(),items,"cart",dataSnapshot));
         if(items.size()>0)
             empty.setVisibility(View.INVISIBLE);
         else
@@ -298,10 +307,13 @@ public class CartActivity extends AppCompatActivity {
             expectedDelivery.put("expected delivery", "null");
             Map<String, Object> delivered = new HashMap<>();
             delivered.put("delivered", false);
+            Map<String,Object> userOrderNo = new HashMap<>();
+            userOrderNo.put("user order number",""+(noOfOrders+1));
             ref.child("orders").child(""+(noOfOrders+1)).updateChildren(expectedDelivery);
             ref.child("orders").child(""+(noOfOrders+1)).updateChildren(delivered);
             ref2.child("orders").child(""+(noOfShopOrders+1)).updateChildren(expectedDelivery);
             ref2.child("orders").child(""+(noOfShopOrders+1)).updateChildren(delivered);
+            ref2.child("orders").child(""+(noOfShopOrders+1)).updateChildren(userOrderNo);
 
             Map<String, Object> shopId = new HashMap<>();
             shopId.put("shopId", "null");

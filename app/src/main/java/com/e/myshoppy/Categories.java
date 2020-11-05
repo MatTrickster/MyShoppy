@@ -33,6 +33,10 @@ public class Categories extends Fragment {
             R.mipmap.music, R.mipmap.elec_repair, R.mipmap.textile
     };
 
+    public Categories(){
+
+    }
+
     public Categories(Context c,String type){
         context = c;
         this.type = type;

@@ -29,7 +29,7 @@ import java.util.List;
 
 public class Orders extends Fragment {
 
-    OrderParentAdapter parentItemAdapter;
+    OrderParentAdapter parentOngoingOrderAdapter,parentPastOrderAdapter;
     Context context;
     String type;
     TextView current,past;
@@ -51,47 +51,89 @@ public class Orders extends Fragment {
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_orders, container, false);
-        RecyclerView currentList = view.findViewById(R.id.list1);
+        final RecyclerView currentList = view.findViewById(R.id.list1);
+        final RecyclerView pastList = view.findViewById(R.id.list2);
         current = view.findViewById(R.id.current);
         past = view.findViewById(R.id.past);
 
+        current.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(currentList.getVisibility() == View.GONE)
+                    currentList.setVisibility(View.VISIBLE);
+                else
+                    currentList.setVisibility(View.GONE);
+            }
+        });
+
+        past.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(pastList.getVisibility() == View.GONE)
+                    pastList.setVisibility(View.VISIBLE);
+                else
+                    pastList.setVisibility(View.GONE);
+            }
+        });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        parentItemAdapter = new OrderParentAdapter(ParentItemList(), getContext(),type,snaps);
-        currentList.setAdapter(parentItemAdapter);
+        parentOngoingOrderAdapter = new OrderParentAdapter(ParentItemList("current"), getContext(),type,snaps);
+        currentList.setAdapter(parentOngoingOrderAdapter);
         currentList.setLayoutManager(layoutManager);
+
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(context);
+        parentPastOrderAdapter = new OrderParentAdapter(ParentItemList("past"), getContext(),type,null);
+        pastList.setAdapter(parentPastOrderAdapter);
+        pastList.setLayoutManager(layoutManager1);
 
         return view;
     }
 
-    public List<OrderParentItem> ParentItemList() {
+    public List<OrderParentItem> ParentItemList(final String list) {
 
         final List<OrderParentItem> items = new ArrayList<>();
         DatabaseReference ref;
 
         if (type.equals("customer")) {
 
-            ref = FirebaseDatabase.getInstance().getReference("users/" +
-                    FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "orders/");
+            if(list.equals("current")) {
+                ref = FirebaseDatabase.getInstance().getReference("users/" +
+                        FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "orders/");
+            }else{
+                ref = FirebaseDatabase.getInstance().getReference("users/" +
+                        FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "past orders/");
+            }
         } else {
-            ref = FirebaseDatabase.getInstance().getReference("shopkeepers/" +
-                    FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "orders/");
+            if(list.equals("current")) {
+                ref = FirebaseDatabase.getInstance().getReference("shopkeepers/" +
+                        FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "orders/");
+            }else{
+                ref = FirebaseDatabase.getInstance().getReference("shopkeepers/" +
+                        FirebaseAuth.getInstance().getCurrentUser().getUid() + "/" + "past orders/");
+            }
         }
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                items.clear();
+                snaps.clear();
                 int i=0;
                 for (DataSnapshot snap : snapshot.getChildren()) {
 
                     List<ShoppingItem> item = ChildItemList(snap,type.equals("customer")?0:1);
                     items.add(new OrderParentItem("Order " + snap.getKey(),
-                            item, "Rs ." + snap.child("amount").getValue().toString()));
+                            item, "Rs. " + snap.child("amount").getValue().toString()));
                     snaps.add(snap);
                     i++;
                 }
 
-                parentItemAdapter.notifyDataSetChanged();
-                current.setText("Ongoing Order (" + items.size() +")");
+                parentOngoingOrderAdapter.notifyDataSetChanged();
+
+                if(list.equals("current"))
+                    current.setText("Ongoing Orders (" + items.size() +")");
+                else
+                    past.setText("Past Orders (" + items.size() +")");
 
             }
 
@@ -108,7 +150,7 @@ public class Orders extends Fragment {
     public List<ShoppingItem> ChildItemList(DataSnapshot snap,int x) {
 
         List<ShoppingItem> item = new ArrayList<>();
-        long loop = (x==0)?snap.getChildrenCount()-3:snap.getChildrenCount()-4;
+        long loop = (x==0)?snap.getChildrenCount()-3:snap.getChildrenCount()-5;
         for (int i = 0; i < loop; i++) {
 
             item.add(new ShoppingItem(
@@ -118,7 +160,8 @@ public class Orders extends Fragment {
                     snap.child(String.valueOf(i)).child("description").getValue().toString(),
                     snap.child(String.valueOf(i)).child("price").getValue().toString(),
                     Integer.valueOf(snap.child(String.valueOf(i)).child("quantity").getValue().toString()),
-                    "",null
+                    "",
+                    snap.child(String.valueOf(i)).child("path").getValue().toString()
             ));
 
         }
