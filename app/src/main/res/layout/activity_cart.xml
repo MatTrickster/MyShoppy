@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/AppTheme.NoActionBar"
     tools:context=".CartActivity">
 
     <TextView
@@ -39,6 +40,7 @@
             android:backgroundTint="#eeeeee"
             android:maxLines="2"
             android:text="Continue\nShopping"/>
+
         <Button
             android:id="@+id/clearCart"
             android:layout_width="0dp"

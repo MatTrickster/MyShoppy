@@ -14,14 +14,13 @@
         android:layout_height="wrap_content" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_navigation_view"
-        android:layout_width="match_parent"
         android:id="@+id/nav"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="#fff"
-        app:itemTextColor="#fff"
-        />
+        app:itemIconTint="#000"
+        app:itemTextColor="#000"
+        app:menu="@menu/bottom_navigation_view" />
 
 </RelativeLayout>
