@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyShoppy</string>
+    <string name="app_name">Ashish Bazaar</string>
     <string name="register">Don\'t have an user account? <u><b>Sign Up</b></u></string>
     <string name="forget_password_email_entry">Enter your registered email id here</string>
     <string name="submit">Submit</string>

@@ -18,7 +18,8 @@
         <activity android:name=".ProductsActivity" />
         <activity android:name=".AddProduct" />
         <activity android:name=".ShopkeeperActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".SplashActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
