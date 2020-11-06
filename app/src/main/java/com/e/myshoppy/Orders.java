@@ -33,7 +33,7 @@ public class Orders extends Fragment {
     Context context;
     String type;
     TextView current,past;
-    ArrayList<DataSnapshot> snaps = new ArrayList<>();
+    ArrayList<DataSnapshot> snaps1 = new ArrayList<>(), snaps2 = new ArrayList<>();
 
     public Orders(Context c, String type) {
         context = c;
@@ -77,12 +77,13 @@ public class Orders extends Fragment {
         });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        parentOngoingOrderAdapter = new OrderParentAdapter(ParentItemList("current"), getContext(),type,snaps);
+        parentOngoingOrderAdapter = new OrderParentAdapter(ParentItemList("current"), getContext(),type,snaps1);
         currentList.setAdapter(parentOngoingOrderAdapter);
         currentList.setLayoutManager(layoutManager);
 
+
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(context);
-        parentPastOrderAdapter = new OrderParentAdapter(ParentItemList("past"), getContext(),type,null);
+        parentPastOrderAdapter = new OrderParentAdapter(ParentItemList("past"), getContext(),type,snaps2);
         pastList.setAdapter(parentPastOrderAdapter);
         pastList.setLayoutManager(layoutManager1);
 
@@ -117,14 +118,22 @@ public class Orders extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 items.clear();
-                snaps.clear();
+
+                if(list.equals("current"))
+                    snaps1.clear();
+                else
+                    snaps2.clear();
+
                 int i=0;
                 for (DataSnapshot snap : snapshot.getChildren()) {
 
                     List<ShoppingItem> item = ChildItemList(snap,type.equals("customer")?0:1);
                     items.add(new OrderParentItem("Order " + snap.getKey(),
                             item, "Rs. " + snap.child("amount").getValue().toString()));
-                    snaps.add(snap);
+                    if(list.equals("current"))
+                        snaps1.add(snap);
+                    else
+                        snaps2.add(snap);
                     i++;
                 }
 

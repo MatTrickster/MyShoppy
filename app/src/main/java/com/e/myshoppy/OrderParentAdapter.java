@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -113,10 +115,21 @@ public class OrderParentAdapter extends RecyclerView.Adapter<OrderParentAdapter.
                                     snaps.get(position).child("expected delivery").getRef().setValue(date);
 
                                     if(val[0]==1){
-                                        ref.child("delivered").setValue(true);
-                                        snaps.get(position).child("delivered").getRef().setValue(true);
 
-                                        //TODO
+                                        DatabaseReference rf = FirebaseDatabase.getInstance()
+                                                .getReference("users/"+uid+"/past orders/");
+                                        rf.child(orderNo).setValue(snaps.get(position).getValue());
+                                        rf.child(orderNo).child("user order number").removeValue();
+                                        rf.child(orderNo).child("userId").removeValue();
+                                        rf.child(orderNo).child("delivered").setValue(true);
+                                        ref.removeValue();
+
+                                        rf = FirebaseDatabase.getInstance()
+                                                .getReference("shopkeepers/"+
+                                                        FirebaseAuth.getInstance().getCurrentUser().getUid() +"/past orders/");
+                                        rf.child(snaps.get(position).getKey()).setValue(snaps.get(position).getValue());
+                                        rf.child(snaps.get(position).getKey()).child("delivered").setValue(true);
+                                        snaps.get(position).getRef().removeValue();
 
                                     }else{
                                         ref.child("delivered").setValue(false);
