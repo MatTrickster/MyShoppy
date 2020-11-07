@@ -5,121 +5,144 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".RegisterActivity">
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="match_parent">
-
-        <ProgressBar
+        <ImageView
+            android:src="@drawable/logo_transparent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/registrationPageProgressBar"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-
+            android:layout_height="80dp"/>
         <TextView
             android:id="@+id/userRegistrationPageTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:textAlignment="center"
             android:padding="16dp"
-            android:text="Registration"
+            android:text="Shop Registration"
             android:textSize="32sp" />
-
-        <LinearLayout
-            android:id="@+id/registrationForm"
+        <androidx.cardview.widget.CardView
+            android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/userRegistrationPageTitle"
-            android:layout_margin="32dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/name"
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/registrationPageProgressBar"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/registrationForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName" />
+                android:layout_margin="32dp"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/email"
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_round"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_round"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="@string/prompt_email"
+                    android:inputType="textEmailAddress" />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_round"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="@string/prompt_password"
+                    android:inputType="textPassword" />
+
+                <EditText
+                    android:id="@+id/code"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_round"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="Code"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/s_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_round"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="Shop Name" />
+
+                <EditText
+                    android:id="@+id/s_reg_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_round"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="Shop registration Number"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/s_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edit_round"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="Shop Address"/>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_below="@id/registrationForm"
+                android:id="@+id/spin_register"
+                android:gravity="center"
                 android:layout_width="match_parent"
+                android:layout_margin="20dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress" />
+                android:entries="@array/spinnerItems2"
+                />
 
-            <EditText
-                android:id="@+id/password"
+            <Button
+                android:layout_marginTop="20dp"
+                android:id="@+id/register"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="@string/prompt_password"
-                android:inputType="textPassword" />
+                android:layout_height="40dp"
+                android:background="@drawable/submit_button_round"
+                android:layout_below="@id/spin_register"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp"
+                android:layout_marginBottom="20dp"
 
-            <EditText
-                android:id="@+id/code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="Code"
-                android:inputType="number" />
+                android:text="Register" />
 
-            <EditText
-                android:id="@+id/s_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="Shop Name" />
-
-            <EditText
-                android:id="@+id/s_reg_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="Shop registration Number"
-                android:inputType="number" />
-
-            <EditText
-                android:id="@+id/s_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:hint="Shop Address"/>
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:layout_below="@id/registrationForm"
-            android:id="@+id/spin_register"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_margin="20dp"
-            android:layout_height="wrap_content"
-            android:entries="@array/spinnerItems2"
-            />
-
-        <Button
-            android:layout_marginTop="20dp"
-            android:id="@+id/register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/spin_register"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="48dp"
-            android:text="Register" />
-
-    </RelativeLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    </LinearLayout>
 
 </ScrollView>
 
