@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
-
+    ImageView logo;
     TextView register;
     ProgressBar progressBar;
     Spinner spinner;
@@ -41,12 +42,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        getSupportActionBar().hide();
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setMessage("Loading ...");
         final AlertDialog dialog = builder.create();
         dialog.show();
-
+        logo = findViewById(R.id.welcome);
+        logo.setImageResource(R.drawable.logo_transparent);
         register = findViewById(R.id.register);
         login = findViewById(R.id.login);
         email_edit = findViewById(R.id.usernameLogin);

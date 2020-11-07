@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/my_gradient"
     tools:context=".AddProduct">
 
     <ScrollView
@@ -21,22 +22,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Enter Product Details"
-                android:textColor="@android:color/black"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center"
+                android:text="ENTER PRODUCT DETAILS"
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/primary_text_dark"
                 android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/addProductId"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:drawablePadding="10dp"
+                android:background="@drawable/edit_round"
+                android:padding="10dp"
                 android:layout_margin="8dp"
-                android:hint="ProductID" />
+                android:hint="Product ID" />
 
 
             <EditText
+                android:padding="10dp"
                 android:id="@+id/addProductTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:drawablePadding="10dp"
+                android:background="@drawable/edit_round"
                 android:layout_margin="8dp"
                 android:hint="Title" />
 
@@ -44,31 +54,39 @@
                 android:enabled="false"
                 android:id="@+id/addProductType"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:background="@drawable/edit_round"
                 android:layout_margin="8dp"
                 android:hint="Type" />
 
             <EditText
                 android:id="@+id/addProductPrice"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_round"
                 android:layout_margin="8dp"
+                android:padding="10dp"
                 android:hint="Price"
                 android:inputType="numberDecimal" />
 
             <EditText
                 android:id="@+id/addProductQuantity"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_round"
                 android:layout_margin="8dp"
+                android:padding="10dp"
                 android:hint="Quantity"
                 android:inputType="number" />
 
             <EditText
                 android:id="@+id/addProductDescription"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/edit_round"
                 android:layout_margin="8dp"
+                android:padding="10dp"
                 android:hint="Description"
                 android:inputType="textImeMultiLine" />
 
@@ -78,6 +96,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="50dp"
                 android:layout_marginEnd="50dp"
+                android:background="@drawable/button_round"
+                android:drawableLeft="@drawable/add"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -91,7 +111,8 @@
         android:id="@+id/addProductSubmit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="26dp"
+        android:background="@drawable/submit_button_round"
         android:text="Submit"/>
 
 </LinearLayout>

@@ -86,7 +86,7 @@ public class IndividualProduct extends AppCompatActivity {
         quantity = findViewById(R.id.p_quantity);
         addToCart = findViewById(R.id.add_to_cart);
 
-        Picasso.with(IndividualProduct.this).load(item.getPath()).placeholder(R.drawable.add).into(imageView);
+        Picasso.with(IndividualProduct.this).load(item.getPath()).error( R.drawable.sample_product).placeholder(R.drawable.progress_animation).into(imageView);
 
         name.setText(item.getTitle());
         price.setText(item.getPrice());
