@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="Referral Codes"
+        android:id="@+id/ref_code"
+        app:showAsAction="never"
+        />
+
+    <item android:title="Change Admin Code"
+        android:id="@+id/change_admin_code"
+        app:showAsAction="never"
+        />
+
+</menu>

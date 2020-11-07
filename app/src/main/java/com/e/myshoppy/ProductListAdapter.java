@@ -50,7 +50,7 @@ public class ProductListAdapter extends ArrayAdapter<ShoppingItem> {
         final ShoppingItem currentItem = getItem(position);
 
         ImageView img = listItemView.findViewById(R.id.itemIcon);
-        Picasso.with(context).load(currentItem.getPath()).placeholder(R.drawable.add).into(img);
+        Picasso.with(context).load(currentItem.getPath()).placeholder(R.drawable.loading_gif).into(img);
 
         TextView name = listItemView.findViewById(R.id.itemName);
         name.setText(currentItem.getTitle());

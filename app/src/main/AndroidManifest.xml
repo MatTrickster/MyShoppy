@@ -11,15 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShopsActivity"></activity>
+        <activity android:name=".AdminActivity"></activity>
+        <activity android:name=".ShopsActivity" />
         <activity android:name=".CartActivity" />
         <activity android:name=".IndividualProduct" />
         <activity android:name=".UserProductActivity" />
         <activity android:name=".ProductsActivity" />
         <activity android:name=".AddProduct" />
         <activity android:name=".ShopkeeperActivity" />
-        <activity android:name=".SplashActivity"
-            >
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

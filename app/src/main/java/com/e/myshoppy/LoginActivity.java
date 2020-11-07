@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,17 +21,21 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.net.NetworkInterface;
+
 public class LoginActivity extends AppCompatActivity {
     ImageView logo;
-    TextView register;
+    TextView register,admin;
     ProgressBar progressBar;
     Spinner spinner;
     private Button login;
@@ -56,18 +63,18 @@ public class LoginActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         progressBar = findViewById(R.id.loginPageProgressBar);
         auth = FirebaseAuth.getInstance();
+        admin = findViewById(R.id.admin);
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    dialog.setMessage("Signing In ...");
                     String tag = "";
 
                     if(pos == 0)
                         tag = "users/";
-                    else if(pos == 2)
+                    else if(pos == 1)
                         tag = "shopkeepers/";
 
                     FirebaseDatabase.getInstance().getReference(tag + user.getUid())
@@ -75,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     dialog.dismiss();
+                                    dialog.setMessage("Signing In ...");
                                     if(dataSnapshot.exists()) {
                                         if (pos == 0) {
                                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -82,32 +90,14 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
                                             progressBar.setVisibility(View.GONE);
                                             finish();
-                                        } else if (pos == 2) {
+                                        } else if (pos == 1) {
                                             Intent intent = new Intent(getApplicationContext(), ShopkeeperActivity.class);
-                                            startActivity(intent);
-                                            Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            finish();
-                                        }
-                                    }else{
-                                        if (pos == 2) {
-                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                            intent.putExtra("is_seller", false);
-                                            startActivity(intent);
-                                            Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            finish();
-                                        } else if (pos == 0) {
-                                            Intent intent = new Intent(getApplicationContext(), ShopkeeperActivity.class);
-                                            intent.putExtra("is_seller", true);
                                             startActivity(intent);
                                             Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
                                             progressBar.setVisibility(View.GONE);
                                             finish();
                                         }
                                     }
-
-
                                 }
 
                                 @Override
@@ -154,6 +144,67 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+        admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                builder.setTitle("Code");
+                final EditText text = new EditText(LoginActivity.this);
+                text.setInputType(InputType.TYPE_CLASS_NUMBER);
+                builder.setView(text);
+                builder.setPositiveButton("OK", null);
+                final AlertDialog dialog = builder.create();
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+                                progressDialog.show();
+                                final String code = text.getText().toString();
+                                if(!code.isEmpty()){
+
+                                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("admin/admin code/");
+                                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String pass = snapshot.getValue().toString();
+
+                                            if(code.equals(pass)){
+                                                dialog.dismiss();
+                                                Toast.makeText(getApplicationContext(), "Admin Logged In", Toast.LENGTH_SHORT).show();
+                                                dialog.dismiss();
+                                                progressDialog.dismiss();
+                                                startActivity(new Intent(LoginActivity.this,AdminActivity.class));
+                                                finish();
+                                            }else{
+                                                Toast.makeText(getApplicationContext(), "Incorrect Code", Toast.LENGTH_SHORT).show();
+                                                progressDialog.dismiss();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+                                }else{
+                                    text.setError("Field Empty");
+                                    progressDialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                });
+                dialog.show();
+
+            }
+        });
     }
 
     @Override
@@ -171,19 +222,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginUser(String email, String password) {
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("TAG", "signInWithEmail:onComplete:" + task.isSuccessful());
-
                         if (!task.isSuccessful()) {
-                            Log.w("TAG", "signInWithEmail:failed", task.getException());
-                            Toast.makeText(getApplicationContext(), R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
-
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Log in Successful",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), R.string.auth_failed, Toast.LENGTH_SHORT).show();
                         }
                         progressBar.setVisibility(View.GONE);
                     }

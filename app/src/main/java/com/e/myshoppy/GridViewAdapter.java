@@ -11,6 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GridViewAdapter extends BaseAdapter {
@@ -54,6 +56,9 @@ public class GridViewAdapter extends BaseAdapter {
             CircleImageView imageView = grid.findViewById(R.id.image);
             textView.setText(category[i]);
             imageView.setImageResource(img[i]);
+
+            CardView card = grid.findViewById(R.id.card);
+            card.setBackgroundResource(R.drawable.card_top_corner_radius);
         } else {
             grid = convertView;
         }

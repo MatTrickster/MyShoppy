@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 
 public class ShopsActivity extends AppCompatActivity {
 
+    EditText search;
     TextView empty;
     ListView listView;
     ProgressBar progressBar;
@@ -38,6 +42,7 @@ public class ShopsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shops);
 
+        search = findViewById(R.id.searchBar);
         empty = findViewById(R.id.empty_view);
         listView = findViewById(R.id.list_view);
         progressBar = findViewById(R.id.progress);
@@ -73,6 +78,34 @@ public class ShopsActivity extends AppCompatActivity {
                 intent.putExtra("sId",list.get(i).getId());
                 intent.putExtra("category",category);
                 startActivity(intent);
+
+            }
+        });
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                int textLength = charSequence.length();
+                ArrayList<Shop> temp = new ArrayList<>();
+                for (Shop x : list) {
+                    if (textLength <= x.getName().length()) {
+                        if (x.getName().toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                            temp.add(x);
+                        }
+                    }
+                }
+                listView.setAdapter(new ShopsAdapter(getApplicationContext(), temp));
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
 
             }
         });
