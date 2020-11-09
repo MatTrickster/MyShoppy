@@ -185,6 +185,8 @@ public class AdminActivity extends AppCompatActivity {
             dialog.show();
 
 
+        }else if(id == R.id.about){
+            startActivity(new Intent(getApplicationContext(),AboutActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

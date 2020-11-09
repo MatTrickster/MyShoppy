@@ -8,14 +8,24 @@ public class ShopDetails {
     String sAddress;
     String Email;
     String Code;
+    String contact;
 
-    public ShopDetails(String sName,String sKName,String sRegNumber,String sAddress){
+    public ShopDetails(String sName,String sKName,String sRegNumber,String sAddress,String contact){
 
         this.sName = sName;
         this.sKName = sKName;
         this.sRegNumber = sRegNumber;
         this.sAddress = sAddress;
+        this.contact = contact;
 
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public void setCode(String code) {

@@ -44,6 +44,7 @@ public class Account extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_account, container, false);
 
+
         final EditText nameEdit = v.findViewById(R.id.name);
         final EditText emailEdit = v.findViewById(R.id.email);
         final EditText noEdit = v.findViewById(R.id.number);
@@ -61,9 +62,9 @@ public class Account extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 nameEdit.setText(snapshot.child("info").child("name").getValue().toString());
                 emailEdit.setText(snapshot.child("info").child("email").getValue().toString());
+                noEdit.setText(snapshot.child("info").child("contact").getValue().toString());
 
-                if(snapshot.child("info").getChildrenCount()>2){
-                    noEdit.setText(snapshot.child("info").child("number").getValue().toString());
+                if(snapshot.child("info").getChildrenCount()>3){
                     flatEdit.setText(snapshot.child("info").child("house_no").getValue().toString());
                     cityEdit.setText(snapshot.child("info").child("city").getValue().toString());
                     landEdit.setText(snapshot.child("info").child("landmark").getValue().toString());
@@ -88,7 +89,6 @@ public class Account extends Fragment {
                 if(text.equals("Edit")){
                     editSave.setText("save");
                     nameEdit.setEnabled(true);
-                    noEdit.setEnabled(true);
                     flatEdit.setEnabled(true);
                     cityEdit.setEnabled(true);
                     landEdit.setEnabled(true);
@@ -98,7 +98,6 @@ public class Account extends Fragment {
                 }else{
 
                     String name = nameEdit.getText().toString();
-                    String no = noEdit.getText().toString();
                     String flat = flatEdit.getText().toString();
                     String city = cityEdit.getText().toString();
                     String land = landEdit.getText().toString();
@@ -106,8 +105,6 @@ public class Account extends Fragment {
 
                     if(name.isEmpty())
                         nameEdit.setError("Field is Empty");
-                    else if(no.length() != 10)
-                        noEdit.setError("Incorrect Phone Number");
                     else if(flat.isEmpty())
                         flatEdit.setError("Field is Empty");
                     else if(city.isEmpty())
@@ -121,7 +118,6 @@ public class Account extends Fragment {
                         Map<String, Object> info = new HashMap<>();
                         info.put("name",name);
                         info.put("email",emailEdit.getText().toString());
-                        info.put("number",no);
                         info.put("house_no",flat);
                         info.put("city",city);
                         info.put("landmark",land);

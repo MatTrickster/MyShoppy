@@ -35,15 +35,11 @@ import java.util.ArrayList;
 public class ShopkeeperActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopkeeper);
-
-        DatabaseReference ref = database.getReference("shopkeepers/" +
-                FirebaseAuth.getInstance().getCurrentUser().getUid() + "/products/");
 
         loadFragment(new ShopkeeperCategories());
 
@@ -92,6 +88,8 @@ public class ShopkeeperActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             finish();
+        }else if(id == R.id.about){
+            startActivity(new Intent(getApplicationContext(),AboutActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

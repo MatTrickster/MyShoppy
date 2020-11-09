@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -82,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }else if(id == R.id.cart){
             startActivity(new Intent(getApplicationContext(),CartActivity.class));
+        }else if(id == R.id.about){
+            startActivity(new Intent(getApplicationContext(),AboutActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

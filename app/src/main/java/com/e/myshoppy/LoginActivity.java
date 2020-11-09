@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +36,7 @@ import java.net.NetworkInterface;
 
 public class LoginActivity extends AppCompatActivity {
     ImageView logo;
-    TextView register,admin;
+    TextView register, admin;
     ProgressBar progressBar;
     Spinner spinner;
     private Button login;
@@ -44,13 +45,15 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     int pos = 0;
+    ValueEventListener v;
+    DatabaseReference r;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getSupportActionBar().hide();
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setMessage("Loading ...");
         final AlertDialog dialog = builder.create();
         dialog.show();
@@ -69,46 +72,61 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (user != null) {
-                    String tag = "";
+                    builder.setMessage("Signing in");
+                    r = FirebaseDatabase.getInstance().getReference();
+                    v = r.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            boolean go = false;
+                            for (DataSnapshot x : snapshot.child("users").getChildren()) {
 
-                    if(pos == 0)
-                        tag = "users/";
-                    else if(pos == 1)
-                        tag = "shopkeepers/";
+                                if (x.getKey().equals(user.getUid())) {
+                                    go = true;
+                                    break;
+                                }
 
-                    FirebaseDatabase.getInstance().getReference(tag + user.getUid())
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    dialog.dismiss();
-                                    dialog.setMessage("Signing In ...");
-                                    if(dataSnapshot.exists()) {
-                                        if (pos == 0) {
-                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                            startActivity(intent);
-                                            Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            finish();
-                                        } else if (pos == 1) {
-                                            Intent intent = new Intent(getApplicationContext(), ShopkeeperActivity.class);
-                                            startActivity(intent);
-                                            Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
-                                            progressBar.setVisibility(View.GONE);
-                                            finish();
-                                        }
+                            }
+
+                            if(go){
+                                dialog.dismiss();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                                finish();
+                            }else {
+
+                                for (DataSnapshot x : snapshot.child("shopkeepers").getChildren()) {
+                                    if (x.getKey().equals(user.getUid())) {
+                                        go = true;
+                                        break;
                                     }
                                 }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                    Log.w("TAG", "Failed to read value.", databaseError.toException());
+                                if(go){
+                                    dialog.dismiss();
+                                    Intent intent = new Intent(getApplicationContext(), ShopkeeperActivity.class);
+                                    startActivity(intent);
+                                    Toast.makeText(getApplicationContext(), "Sign in Successful!", Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.GONE);
+                                    finish();
                                 }
-                            });
+
+                                dialog.dismiss();
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 } else {
                     dialog.dismiss();
-                    Log.d("TAG", "onAuthStateChanged:signed_out");
                 }
 
             }
@@ -118,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
 
             }
         });
@@ -131,14 +149,14 @@ public class LoginActivity extends AppCompatActivity {
                 email = email_edit.getText().toString();
                 pass = pass_edit.getText().toString();
 
-                if(email.isEmpty()){
+                if (email.isEmpty()) {
                     email_edit.setError("Field is Empty");
-                }else if(pass.isEmpty()){
+                } else if (pass.isEmpty()) {
                     pass_edit.setError("Field is Empty");
-                }else{
+                } else {
 
                     pos = spinner.getSelectedItemPosition();
-                    loginUser(email,pass);
+                    loginUser(email, pass);
 
                 }
 
@@ -166,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                                 final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
                                 progressDialog.show();
                                 final String code = text.getText().toString();
-                                if(!code.isEmpty()){
+                                if (!code.isEmpty()) {
 
                                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference("admin/admin code/");
                                     ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -174,14 +192,14 @@ public class LoginActivity extends AppCompatActivity {
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             String pass = snapshot.getValue().toString();
 
-                                            if(code.equals(pass)){
+                                            if (code.equals(pass)) {
                                                 dialog.dismiss();
                                                 Toast.makeText(getApplicationContext(), "Admin Logged In", Toast.LENGTH_SHORT).show();
                                                 dialog.dismiss();
                                                 progressDialog.dismiss();
-                                                startActivity(new Intent(LoginActivity.this,AdminActivity.class));
+                                                startActivity(new Intent(LoginActivity.this, AdminActivity.class));
                                                 finish();
-                                            }else{
+                                            } else {
                                                 Toast.makeText(getApplicationContext(), "Incorrect Code", Toast.LENGTH_SHORT).show();
                                                 progressDialog.dismiss();
                                             }
@@ -193,7 +211,7 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     });
 
-                                }else{
+                                } else {
                                     text.setError("Field Empty");
                                     progressDialog.dismiss();
                                 }
@@ -205,6 +223,13 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        r.removeEventListener(v);
+        super.onDestroy();
+
     }
 
     @Override
@@ -223,13 +248,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginUser(String email, String password) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), R.string.auth_failed, Toast.LENGTH_SHORT).show();
-                        }
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), R.string.auth_failed, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

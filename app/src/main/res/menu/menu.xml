@@ -13,4 +13,9 @@
         android:icon="@drawable/cart"
         />
 
+    <item android:id="@+id/about"
+        android:title="About"
+        app:showAsAction="never"
+        />
+
 </menu>

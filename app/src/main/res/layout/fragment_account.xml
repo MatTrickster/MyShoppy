@@ -30,6 +30,32 @@
                 android:background="@drawable/edit_round"
                 android:layout_height="wrap_content">
                 <com.google.android.material.textfield.TextInputEditText
+                    android:enabled="false"
+                    android:hint="Shop Name"
+                    android:id="@+id/shop_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:background="@drawable/edit_round"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:enabled="false"
+                    android:hint="Shop Registration Number"
+                    android:id="@+id/shop_reg_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:background="@drawable/edit_round"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
                     android:hint="Email"
                     android:id="@+id/email"
                     android:enabled="false"
