@@ -38,8 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
     ProgressBar progressBar;
     private FirebaseAuth auth;
     private Button register;
-    private String email, pass,name,sName,sRegNumber,sAddress,code,mobile;
-    private EditText email_edit, pass_edit, name_edit, sName_edit, sRegNumber_edit, sAddress_edit, code_edit, no_edit;
+    private String email, pass,name,sName,sRegNumber,sCity,code,mobile;
+    private EditText email_edit, pass_edit, name_edit, sName_edit, sRegNumber_edit, sCity_edit, code_edit, no_edit;
     private Spinner spinner;
     int pos = 0;
     DatabaseReference ref;
@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         pass_edit = findViewById(R.id.password);
         sName_edit = findViewById(R.id.s_name);
         sRegNumber_edit = findViewById(R.id.s_reg_number);
-        sAddress_edit = findViewById(R.id.s_address);
+        sCity_edit = findViewById(R.id.s_city);
         code_edit = findViewById(R.id.code);
         register = findViewById(R.id.register);
         spinner = findViewById(R.id.spin_register);
@@ -70,12 +70,12 @@ public class RegisterActivity extends AppCompatActivity {
                 if(spinner.getSelectedItemPosition() == 0){
                     sName_edit.setVisibility(View.GONE);
                     sRegNumber_edit.setVisibility(View.GONE);
-                    sAddress_edit.setVisibility(View.GONE);
+                    sCity_edit.setVisibility(View.GONE);
                     code_edit.setVisibility(View.GONE);
                 }else{
                     sName_edit.setVisibility(View.VISIBLE);
                     sRegNumber_edit.setVisibility(View.VISIBLE);
-                    sAddress_edit.setVisibility(View.VISIBLE);
+                    sCity_edit.setVisibility(View.VISIBLE);
                     code_edit.setVisibility(View.VISIBLE);
                 }
 
@@ -102,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     sName = sName_edit.getText().toString();
                     sRegNumber = sRegNumber_edit.getText().toString();
-                    sAddress = sAddress_edit.getText().toString();
+                    sCity = sCity_edit.getText().toString();
                     code = code_edit.getText().toString();
 
                 }
@@ -121,8 +121,8 @@ public class RegisterActivity extends AppCompatActivity {
                     sName_edit.setError("Field is Empty");
                 }else if(pos== 1 && sRegNumber.isEmpty()){
                     sRegNumber_edit.setError("Field is Empty");
-                }else if(pos == 1 && sAddress.isEmpty()){
-                    sAddress_edit.setError("Field is Empty");
+                }else if(pos == 1 && sCity.isEmpty()){
+                    sCity_edit.setError("Field is Empty");
                 }else if(pos == 1 && code.isEmpty()){
                     code_edit.setError("Field is Empty");
                 }else{
@@ -237,7 +237,9 @@ public class RegisterActivity extends AppCompatActivity {
                                     myRef = FirebaseDatabase.getInstance().getReference("shopkeepers").child(user.getUid());
                                     myRef.child(user.getUid()).push();
 
-                                    ShopDetails details = new ShopDetails(sName,name,sRegNumber,sAddress,no_edit.getText().toString());
+                                    ShopDetails details = new ShopDetails(sName,name,sRegNumber,sCity,
+                                            no_edit.getText().toString(),email_edit.getText().toString(),
+                                            "0");
                                     myRef.child("shopDetails").setValue(details);
                                 }
 

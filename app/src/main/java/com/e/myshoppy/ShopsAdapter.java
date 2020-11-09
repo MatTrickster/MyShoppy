@@ -1,6 +1,7 @@
 package com.e.myshoppy;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +40,16 @@ public class ShopsAdapter extends ArrayAdapter<Shop> {
         ImageView imageView = listItemView.findViewById(R.id.image);
         TextView name = listItemView.findViewById(R.id.name);
         TextView address = listItemView.findViewById(R.id.address);
+        TextView charge = listItemView.findViewById(R.id.charge);
 
         name.setText(shop.getName());
         address.setText(shop.getAddress());
+        if(shop.getCharge().equals("0")) {
+            charge.setText("FREE Delivery");
+            charge.setTextColor(Color.parseColor("#0FEC18"));
+        }
+        else
+            charge.setText("Delivery Charge : Rs. "+shop.getCharge());
 
         return listItemView;
     }

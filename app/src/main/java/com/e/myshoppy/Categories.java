@@ -7,7 +7,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -77,45 +79,37 @@ public class Categories extends Fragment {
             }
         });
 
-        /*
-        final RecyclerView rv_autoScroll = view.findViewById(R.id.banner);
-        final int duration = 10;
-        final int pixelsToMove = 30;
-        final Handler mHandler = new Handler(Looper.getMainLooper());
-        final Runnable SCROLLING_RUNNABLE = new Runnable() {
 
+        final RecyclerView recyclerView = view.findViewById(R.id.horizontal_recycler);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        SnapHelper snapHelper = new PagerSnapHelper();
+        recyclerView.setLayoutManager(layoutManager);
+        snapHelper.attachToRecyclerView(recyclerView);
+        final BannerAdapter banner = new BannerAdapter(getContext(),img);
+        recyclerView.setAdapter(banner);
+
+        final int speedScroll = 2000;
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            int count = 0;
+            boolean flag = true;
             @Override
             public void run() {
-                rv_autoScroll.smoothScrollBy(pixelsToMove, 0);
-                mHandler.postDelayed(this, duration);
-            }
-        };
+                if(count < banner.getItemCount()){
+                    if(count==banner.getItemCount()-1){
+                        flag = false;
+                    }else if(count == 0){
+                        flag = true;
+                    }
+                    if(flag) count++;
+                    else count--;
 
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rv_autoScroll.setLayoutManager(layoutManager);
-
-        rv_autoScroll.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int lastItem = layoutManager.findLastCompletelyVisibleItemPosition();
-                if(lastItem == layoutManager.getItemCount()-1){
-                    mHandler.removeCallbacks(SCROLLING_RUNNABLE);
-                    Handler postHandler = new Handler();
-                    postHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            rv_autoScroll.setAdapter(null);
-                            mHandler.postDelayed(SCROLLING_RUNNABLE, 2000);
-                        }
-                    }, 2000);
+                    recyclerView.smoothScrollToPosition(count);
+                    handler.postDelayed(this,speedScroll);
                 }
             }
-        });
-        mHandler.postDelayed(SCROLLING_RUNNABLE, 2000);
-
-         */
+        };
+        handler.postDelayed(runnable,speedScroll);
 
         return view;
     }

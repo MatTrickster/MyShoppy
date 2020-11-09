@@ -25,6 +25,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/t1"
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:background="@drawable/edit_round"
@@ -38,6 +39,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/t2"
                 android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:background="@drawable/edit_round"
@@ -157,6 +159,21 @@
 
             </LinearLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/t3"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:background="@drawable/edit_round"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:hint="Delivery Charge"
+                    android:inputType="number"
+                    android:id="@+id/charge"
+                    android:enabled="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <Button
                 android:id="@+id/edit_save"
                 android:layout_width="match_parent"
@@ -165,6 +182,7 @@
                 android:background="@drawable/submit_button_round"
                 android:text="Edit"
                 />
+
 
         </LinearLayout>
     </ScrollView>

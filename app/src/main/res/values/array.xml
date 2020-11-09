@@ -25,6 +25,7 @@
 
     <string-array name="states">
 
+        <item>Not Selected</item>
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>
         <item>Assam</item>

@@ -57,7 +57,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         holder.name.setText(pu.getTitle());
         holder.price.setText(pu.getPrice());
-        holder.quan.setText(""+pu.getQuantity());
+        holder.quan.setText("x "+pu.getQuantity());
         holder.total.setText("Rs. "+Integer.valueOf(pu.getPrice())*pu.getQuantity());
         Picasso.with(context).load(pu.getPath()).placeholder(R.drawable.loading_gif).into(holder.icon);
 

@@ -5,19 +5,31 @@ public class ShopDetails {
     String sName;
     String sKName;
     String sRegNumber;
-    String sAddress;
-    String Email;
+    String sCity;
+    String email;
     String Code;
     String contact;
+    String charge;
 
-    public ShopDetails(String sName,String sKName,String sRegNumber,String sAddress,String contact){
+    public ShopDetails(String sName,String sKName,String sRegNumber,String sCity,String contact,
+                       String email,String charge){
 
         this.sName = sName;
         this.sKName = sKName;
         this.sRegNumber = sRegNumber;
-        this.sAddress = sAddress;
+        this.sCity = sCity;
         this.contact = contact;
+        this.email = email;
+        this.charge = charge;
 
+    }
+
+    public void setCharge(String charge) {
+        this.charge = charge;
+    }
+
+    public String getCharge() {
+        return charge;
     }
 
     public String getContact() {
@@ -37,15 +49,15 @@ public class ShopDetails {
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
-    public String getsAddress() {
-        return sAddress;
+    public String getsCity() {
+        return sCity;
     }
 
     public String getsKName() {
@@ -60,8 +72,8 @@ public class ShopDetails {
         return sRegNumber;
     }
 
-    public void setsAddress(String sAddress) {
-        this.sAddress = sAddress;
+    public void setsCity(String sCity) {
+        this.sCity = sCity;
     }
 
     public void setsKName(String sKName) {

@@ -10,12 +10,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    DatabaseReference ref;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                         loadFragment(fragment);
                         return true;
                     case R.id.account:
-                        fragment = new Account(getApplicationContext());
+                        fragment = new Account(getApplicationContext(),"customer");
                         loadFragment(fragment);
                         return true;
                 }

@@ -8,12 +8,22 @@ public class Shop {
     String imgUrl;
     String Address;
     String id;
+    String charge;
 
-    public Shop(String Name,String Address, String url,String id){
+    public Shop(String Name,String Address, String url,String id,String charge){
         this.Name = Name;
         this.Address = Address;
         imgUrl = url;
         this.id = id;
+        this.charge = charge;
+    }
+
+    public String getCharge() {
+        return charge;
+    }
+
+    public void setCharge(String charge) {
+        this.charge = charge;
     }
 
     public String getId() {

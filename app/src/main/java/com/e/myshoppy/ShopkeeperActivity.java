@@ -58,7 +58,8 @@ public class ShopkeeperActivity extends AppCompatActivity {
                         loadFragment(fragment);
                         return true;
                     case R.id.account:
-
+                        fragment = new Account(getApplicationContext(),"seller");
+                        loadFragment(fragment);
                         return true;
                 }
                 return false;

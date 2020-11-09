@@ -50,6 +50,8 @@ public class CartActivity extends AppCompatActivity {
     Boolean possible = true;
     Boolean alreadyOrderExist = false, shopOrdersExist = false, isAddressAvailable = false;
     long noOfOrders = 0, noOfShopOrders = 0;
+    String deliveryCharge = "0";
+    ValueEventListener l1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,7 @@ public class CartActivity extends AppCompatActivity {
         stocks = new ArrayList<>();
         items = new ArrayList<>();
 
-        ref.addValueEventListener(new ValueEventListener() {
+        l1 = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -125,6 +127,14 @@ public class CartActivity extends AppCompatActivity {
                         ref2.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                deliveryCharge = snapshot.child("shopDetails").child("delivery charge")
+                                        .getValue().toString();
+
+                                if(deliveryCharge.equals("0")){
+                                    priceView.setText("Rs. " + totalAmount + "\nFREE Delivery");
+                                }else
+                                    priceView.setText("Rs. " + totalAmount + " + " + deliveryCharge + " (Delivery Charge)");
+
                                 if(snapshot.child("orders").getChildrenCount() != 0){
                                     shopOrdersExist = true;
                                     noOfShopOrders = snapshot.child("orders").getChildrenCount();
@@ -144,8 +154,8 @@ public class CartActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
                 Log.w("TAG", "Failed to read value.", error.toException());
             }
-        });
-
+        };
+        ref.addValueEventListener(l1);
 
         (findViewById(R.id.returnToPrevPage)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,7 +234,6 @@ public class CartActivity extends AppCompatActivity {
         else
             empty.setVisibility(View.VISIBLE);
 
-        priceView.setText("Rs. " + totalAmount);
     }
 
     private void clearCart() {
@@ -286,7 +295,7 @@ public class CartActivity extends AppCompatActivity {
             }
 
             Map<String,Object> amount = new HashMap<>();
-            amount.put("amount",totalAmount);
+            amount.put("amount",totalAmount+Integer.valueOf(deliveryCharge));
             ref.child("orders").child(""+(noOfOrders+1)).updateChildren(amount);
 
             if(shopOrdersExist){
@@ -319,11 +328,8 @@ public class CartActivity extends AppCompatActivity {
             shopId.put("shopId", "null");
 
             ref.updateChildren(shopId);
-
-
-
+            ref.removeEventListener(l1);
             clearCart();
-
             final AlertDialog.Builder builder1 = new AlertDialog.Builder(CartActivity.this);
             View view = LayoutInflater.from(CartActivity.this).inflate(R.layout.order_placed,null);
             ImageView img = view.findViewById(R.id.gif);

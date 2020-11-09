@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Categories">
+    android:background="#303030"
+    android:orientation="vertical"
+    android:padding="5dp">
 
-    <LinearLayout
-        android:background="#F1F0F0"
-        android:padding="5dp"
-        android:orientation="vertical"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/horizontal_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <GridView
+        android:id="@+id/grid"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:numColumns="4" />
 
-        <GridView
-            android:id="@+id/grid"
-            android:numColumns="3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+</LinearLayout>
 
-    </LinearLayout>
-
-</FrameLayout>

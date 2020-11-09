@@ -144,9 +144,10 @@ public class ShopsActivity extends AppCompatActivity {
                 if (snapshot2.getKey().equals(category)) {
 
                     items.add(new Shop(snapshot1.child("shopDetails").child("sName").getValue().toString(),
-                                        snapshot1.child("shopDetails").child("sAddress").getValue().toString(),
+                                        snapshot1.child("shopDetails").child("sCity").getValue().toString(),
                                     null,
-                                        snapshot1.getKey()));
+                                        snapshot1.getKey(),
+                            snapshot1.child("shopDetails").child("delivery charge").getValue().toString()));
                     break;
                 }
 
