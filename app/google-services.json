@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "416551071780",
-    "firebase_url": "https://myshoppy-d10ff.firebaseio.com",
-    "project_id": "myshoppy-d10ff",
-    "storage_bucket": "myshoppy-d10ff.appspot.com"
+    "project_number": "478078537214",
+    "firebase_url": "https://ashish-bazaar.firebaseio.com",
+    "project_id": "ashish-bazaar",
+    "storage_bucket": "ashish-bazaar.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:416551071780:android:48d3c06f66f25a017428b1",
+        "mobilesdk_app_id": "1:478078537214:android:4988396d8a646da2fc04af",
         "android_client_info": {
           "package_name": "com.e.myshoppy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "416551071780-d5tanhv77e2i07lvhovmejel322mj23q.apps.googleusercontent.com",
+          "client_id": "478078537214-9eqq8q8r7g89qbtkum7ndnb3bc2ctn4t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.e.myshoppy",
+            "certificate_hash": "96387f36346c9e9e2d407605acf13348e9d72ae5"
+          }
+        },
+        {
+          "client_id": "478078537214-1kesivftt96emr93iem7075sj6lufoj4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAnWFwRKRg6UDe3ePP6k8Gmhs9nBicd-lI"
+          "current_key": "AIzaSyClqImHMedT89dQa4IKxCH3ELtlguYgcqo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "416551071780-d5tanhv77e2i07lvhovmejel322mj23q.apps.googleusercontent.com",
+              "client_id": "478078537214-1kesivftt96emr93iem7075sj6lufoj4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
